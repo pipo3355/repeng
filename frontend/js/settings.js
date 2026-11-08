@@ -98,6 +98,8 @@ export function renderSettings() {
       <div class="form-grid">
         <label>Язык объяснений</label>
         <select id="explainLang"><option value="ru">Русский</option><option value="en">English</option></select>
+        <label>Озвучка</label>
+        <label style="color:var(--text)"><input type="checkbox" id="voiceEnOnly2"> озвучивать только английский, русские объяснения — только текстом</label>
       </div>
     </div>
     <div class="row"><button class="primary" id="saveSettings">Сохранить настройки</button></div>`;
@@ -109,7 +111,7 @@ export function renderSettings() {
   v('accent').value = s.tutor.accent || 'en-US';
   v('ttsProvider').value = s.tts.provider; v('ttsAzVoice').value = s.tts.azure_voice; v('ttsAzRuVoice').value = s.tts.azure_ru_voice || ''; v('ttsBase').value = s.tts.base_url;
   v('ttsKey').value = s.tts.api_key; v('ttsModel').value = s.tts.model; v('ttsVoice').value = s.tts.voice; v('ttsRate').value = s.tts.rate;
-  v('explainLang').value = s.tutor.explain_lang;
+  v('explainLang').value = s.tutor.explain_lang; v('voiceEnOnly2').checked = !!s.tutor.voice_english_only;
 
   const toggles = () => {
     root.querySelectorAll('.stt-oc').forEach((e) => e.classList.toggle('hidden', v('sttProvider').value !== 'openai_compat'));
@@ -140,7 +142,7 @@ export function renderSettings() {
     Object.assign(s.azure, { key: v('azKey').value, region: v('azRegion').value.trim() });
     Object.assign(s.tts, { provider: v('ttsProvider').value, azure_voice: v('ttsAzVoice').value, azure_ru_voice: v('ttsAzRuVoice').value, base_url: v('ttsBase').value,
       api_key: v('ttsKey').value, model: v('ttsModel').value, voice: v('ttsVoice').value, rate: Number(v('ttsRate').value) });
-    Object.assign(s.tutor, { explain_lang: v('explainLang').value, accent: v('accent').value });
+    Object.assign(s.tutor, { explain_lang: v('explainLang').value, accent: v('accent').value, voice_english_only: v('voiceEnOnly2').checked });
   };
   const save = async (quiet = false) => {
     collect();

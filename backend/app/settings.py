@@ -33,7 +33,7 @@ DEFAULTS: dict = {
             "model": "gpt-4o-mini-tts", "voice": "alloy", "azure_voice": "en-US-AvaMultilingualNeural", "azure_ru_voice": "ru-RU-SvetlanaNeural", "rate": 1.0},
     "pron": {"provider": "none", "llm_notes": False, "llm_profile": None},  # provider: none | azure | local | audio_llm
     "azure": {"key": "", "region": ""},
-    "tutor": {"explain_lang": "ru", "accent": "en-US"},
+    "tutor": {"explain_lang": "ru", "accent": "en-US", "voice_english_only": False},
 }
 
 SECRET_PATHS = [("stt", "api_key"), ("tts", "api_key"), ("azure", "key")]

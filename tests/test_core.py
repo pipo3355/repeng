@@ -174,3 +174,16 @@ def test_tts_split_by_language():
     assert parts[1][1].startswith("на выходных")
     assert parts[2][1] == "I went to the cinema."
     assert split_by_language("Hello!") == [(False, "Hello!")]
+
+
+def test_partial_settings_update_keeps_profiles(tmp_path, monkeypatch):
+    from backend.app import settings as st
+    monkeypatch.setattr(st, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(st, "SETTINGS_PATH", tmp_path / "settings.json")
+    st.update_from_client({"llm_profiles": [{"id": "a1", "name": "X", "kind": "openai_compat", "api_key": "secret-key-123", "model": "m"}],
+                           "azure": {"key": "azkey-456", "region": "westeurope"}})
+    st.update_from_client({"tutor": {"voice_english_only": True}})
+    s = st.load()
+    assert s["tutor"]["voice_english_only"] is True and s["tutor"]["explain_lang"] == "ru"
+    assert s["llm_profiles"][0]["api_key"] == "secret-key-123" and s["active_llm"] == "a1"
+    assert s["azure"]["key"] == "azkey-456"

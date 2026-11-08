@@ -106,6 +106,10 @@ async function speakBrowser(text, rate) {
 
 export async function speak(text, { rate } = {}) {
   if (!text) return;
+  if (state.settings?.tutor?.voice_english_only) {
+    text = splitByLanguage(text).filter((p) => !p.ru).map((p) => p.text).join(' ');
+    if (!text) return;
+  }
   const tts = state.settings?.tts || { provider: 'browser', rate: 1 };
   rate = rate ?? Number(tts.rate || 1);
   if (tts.provider === 'browser') return speakBrowser(text, rate);

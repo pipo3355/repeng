@@ -19,6 +19,18 @@ export function initChat({ onEnd }) {
   $('endSession').onclick = endSession;
   $('composer').onsubmit = (e) => { e.preventDefault(); sendText(); };
   $('micBtn').onclick = toggleMic;
+  syncVoiceEnOnly();
+  document.addEventListener('settings-changed', syncVoiceEnOnly);
+  $('voiceEnOnly').onchange = async (e) => {
+    const on = e.target.checked;
+    try {
+      state.settings = await api.put('/api/settings', { tutor: { voice_english_only: on } });
+      toast(on ? 'Русские объяснения — только текстом' : 'Русские объяснения снова озвучиваются');
+    } catch (err) {
+      e.target.checked = !on;
+      toast(err.message, true);
+    }
+  };
 
   // hold space to talk (when not typing in a field)
   let spaceDown = false;
@@ -36,6 +48,10 @@ export function initChat({ onEnd }) {
   window.addEventListener('beforeunload', () => {
     if (sessionId) navigator.sendBeacon(`/api/session/${sessionId}/end`);
   });
+}
+
+function syncVoiceEnOnly() {
+  $('voiceEnOnly').checked = !!state.settings?.tutor?.voice_english_only;
 }
 
 function isTyping(e) {
