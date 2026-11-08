@@ -1,0 +1,10 @@
+# Optional: offline pronunciation scoring and local speech recognition.
+# Install after requirements.txt:  pip install -r requirements-local.txt
+# (CPU build of torch; for NVIDIA GPU install torch from https://pytorch.org first)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+transformers>=4.40
+numpy
+g2p_en
+nltk
+faster-whisper>=1.0

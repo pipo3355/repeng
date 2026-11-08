@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RepEng — репетитор английского</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">Rep<span>Eng</span></div>
+  <nav id="nav">
+    <button data-view="chat" class="active">Разговор</button>
+    <button data-view="drill">Произношение</button>
+    <button data-view="review">Повторение</button>
+    <button data-view="progress">Прогресс</button>
+    <button data-view="settings">Настройки</button>
+  </nav>
+  <div class="level-badge" id="levelBadge" title="Текущий уровень">—</div>
+</header>
+
+<main>
+  <!-- CHAT -->
+  <section id="view-chat" class="view active">
+    <div id="placementBanner" class="banner hidden">
+      <div><b>Уровень ещё не определён.</b> Пройдите короткий вводный тест (~10 минут). Репетитор поговорит с вами и оценит уровень.</div>
+      <button class="primary" id="startPlacement">Пройти тест</button>
+    </div>
+    <div class="chat-toolbar">
+      <select id="topicSelect">
+        <option value="">Свободная тема (репетитор выберет сам)</option>
+        <option>Small talk: how was your day</option>
+        <option>Job interview for my profession</option>
+        <option>Ordering food in a café</option>
+        <option>At the airport and hotel</option>
+        <option>Discussing a film or series</option>
+        <option>Talking about technology and work</option>
+        <option>Debate: pros and cons of remote work</option>
+        <option value="__custom">Своя тема…</option>
+      </select>
+      <input id="topicCustom" class="hidden" placeholder="Например: обсуждаем футбол / я турист в Лондоне">
+      <button class="primary" id="startSession">Начать разговор</button>
+      <button id="endSession" class="hidden">Завершить и сохранить</button>
+      <span class="mode-tag hidden" id="modeTag"></span>
+    </div>
+    <div id="chatLog" class="chat-log">
+      <div class="empty-hint">Выберите тему и нажмите «Начать разговор». Можно говорить голосом (кнопка микрофона или удерживать пробел) или писать текстом.</div>
+    </div>
+    <form id="composer" class="composer disabled">
+      <button type="button" id="micBtn" class="mic" title="Говорить (или удерживайте пробел)">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      </button>
+      <input id="textInput" autocomplete="off" placeholder="Напишите по-английски или нажмите микрофон…">
+      <button type="submit" class="primary">Отправить</button>
+    </form>
+    <div class="composer-opts">
+      <label><input type="checkbox" id="autoSpeak" checked> Озвучивать ответы</label>
+      <label><input type="checkbox" id="autoStop" checked> Автостоп записи по паузе</label>
+      <span id="recStatus" class="muted"></span>
+    </div>
+  </section>
+
+  <!-- DRILL -->
+  <section id="view-drill" class="view">
+    <div class="section-head">
+      <div>
+        <h2>Тренировка произношения</h2>
+        <p class="muted">Фразы подбираются под ваши самые слабые звуки. Послушайте, повторите вслух и получите разбор по каждому звуку.</p>
+      </div>
+      <button class="primary" id="drillGen">Подобрать фразы</button>
+    </div>
+    <div class="card">
+      <div class="row">
+        <input id="drillCustom" placeholder="Или введите свою фразу для проверки…">
+        <button id="drillAddCustom">Добавить</button>
+      </div>
+    </div>
+    <div id="drillNotice" class="notice hidden"></div>
+    <div id="drillList" class="drill-list"></div>
+  </section>
+
+  <!-- REVIEW -->
+  <section id="view-review" class="view">
+    <div class="grid2">
+      <div class="card">
+        <div class="section-head small">
+          <h2>Слова к повторению</h2>
+          <button id="vocabReload">Обновить</button>
+        </div>
+        <div id="vocabCard" class="flashcard"></div>
+        <details class="add-word">
+          <summary>Добавить слово вручную</summary>
+          <div class="stack">
+            <input id="newWord" placeholder="word / phrase">
+            <input id="newTranslation" placeholder="перевод">
+            <input id="newContext" placeholder="пример (необязательно)">
+            <button id="addWordBtn">Добавить</button>
+          </div>
+        </details>
+      </div>
+      <div class="card">
+        <div class="section-head small">
+          <h2>Работа над ошибками</h2>
+          <button class="primary" id="exGen">Дать упражнения</button>
+        </div>
+        <div id="exList"><p class="muted">Упражнения составляются по вашим повторяющимся ошибкам из разговоров.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section id="view-progress" class="view">
+    <div id="progressRoot"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="view-settings" class="view">
+    <div id="settingsRoot"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+<div id="popover" class="popover hidden"></div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+data/*
+!data/.gitkeep
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# local screenshots
+/*.png
+/*.jpg
